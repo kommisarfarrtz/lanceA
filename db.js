@@ -12,7 +12,7 @@ db.connect((error)=>{
         console.error("you have a problem with your database",error)
         return 
     }
-    console.log("connection mrigla")
+    console.log("connection mrigla")//hello
 })
 
 module.exports=db
