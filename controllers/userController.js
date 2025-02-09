@@ -5,7 +5,6 @@ exports.getUsers = (req, res) => {
       if (err) {
         return res.status(500).json({ error: err.message });
       }
-      console.log(results); // Check if data is coming from the database
       res.json(results);
     });
   };
