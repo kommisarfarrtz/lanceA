@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1:3308
--- Generation Time: Feb 09, 2025 at 12:06 AM
+-- Generation Time: Feb 09, 2025 at 01:27 AM
 -- Server version: 9.1.0
 -- PHP Version: 8.3.14
 
@@ -34,6 +34,26 @@ CREATE TABLE IF NOT EXISTS `categories` (
   PRIMARY KEY (`id`),
   UNIQUE KEY `name` (`name`)
 ) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `completed_services`
+--
+
+DROP TABLE IF EXISTS `completed_services`;
+CREATE TABLE IF NOT EXISTS `completed_services` (
+  `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT,
+  `buyer_id` bigint UNSIGNED NOT NULL,
+  `seller_id` bigint UNSIGNED NOT NULL,
+  `service_id` bigint UNSIGNED NOT NULL,
+  `status` enum('pending','completed','canceled') NOT NULL DEFAULT 'pending',
+  `completed_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `buyer_id` (`buyer_id`),
+  KEY `seller_id` (`seller_id`),
+  KEY `service_id` (`service_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 -- --------------------------------------------------------
 
@@ -89,8 +109,8 @@ CREATE TABLE IF NOT EXISTS `reviews` (
   `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`),
   UNIQUE KEY `id` (`id`),
-  KEY `service_id` (`service_id`),
-  KEY `user_id` (`user_id`)
+  KEY `user_id` (`user_id`),
+  KEY `service_id` (`service_id`)
 ) ;
 
 -- --------------------------------------------------------
@@ -109,9 +129,27 @@ CREATE TABLE IF NOT EXISTS `services` (
   `serviceCoverpic` text NOT NULL,
   `price` decimal(10,2) DEFAULT NULL,
   `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
+  `price_unit` enum('kg','g','m','hour','litre','piece','none') NOT NULL DEFAULT 'none',
   PRIMARY KEY (`id`),
   KEY `user_id` (`user_id`),
   KEY `category_id` (`category_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `service_images`
+--
+
+DROP TABLE IF EXISTS `service_images`;
+CREATE TABLE IF NOT EXISTS `service_images` (
+  `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT,
+  `user_id` bigint UNSIGNED NOT NULL,
+  `service_id` bigint UNSIGNED NOT NULL,
+  `service_img` varchar(225) NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `user_id` (`user_id`,`service_id`),
+  KEY `service_id` (`service_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 -- --------------------------------------------------------
@@ -150,6 +188,14 @@ INSERT INTO `users` (`id`, `name`, `lastName`, `email`, `password`, `profile_pic
 --
 
 --
+-- Constraints for table `completed_services`
+--
+ALTER TABLE `completed_services`
+  ADD CONSTRAINT `completed_services_ibfk_1` FOREIGN KEY (`buyer_id`) REFERENCES `users` (`id`) ON DELETE CASCADE,
+  ADD CONSTRAINT `completed_services_ibfk_2` FOREIGN KEY (`seller_id`) REFERENCES `users` (`id`) ON DELETE CASCADE,
+  ADD CONSTRAINT `completed_services_ibfk_3` FOREIGN KEY (`service_id`) REFERENCES `services` (`id`) ON DELETE CASCADE;
+
+--
 -- Constraints for table `messages`
 --
 ALTER TABLE `messages`
@@ -167,7 +213,8 @@ ALTER TABLE `notifications`
 -- Constraints for table `reviews`
 --
 ALTER TABLE `reviews`
-  ADD CONSTRAINT `reviews_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+  ADD CONSTRAINT `reviews_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `reviews_ibfk_2` FOREIGN KEY (`service_id`) REFERENCES `services` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Constraints for table `services`
@@ -175,6 +222,13 @@ ALTER TABLE `reviews`
 ALTER TABLE `services`
   ADD CONSTRAINT `fk_services_category` FOREIGN KEY (`category_id`) REFERENCES `categories` (`id`) ON DELETE SET NULL,
   ADD CONSTRAINT `fk_services_user` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE;
+
+--
+-- Constraints for table `service_images`
+--
+ALTER TABLE `service_images`
+  ADD CONSTRAINT `service_images_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `service_images_ibfk_2` FOREIGN KEY (`service_id`) REFERENCES `services` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
