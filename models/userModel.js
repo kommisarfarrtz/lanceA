@@ -22,3 +22,9 @@ exports.deleteUser = (id, callback) => {
   db.query("DELETE FROM users WHERE id=?", [id], callback);
 }
 
+exports.activateSeller = (id, callback) => {
+  db.query("UPDATE users SET is_seller=1 WHERE id=?", [id], callback);
+}
+exports.deactivateSeller = (id, callback) => {
+  db.query("UPDATE users SET is_seller=0 WHERE id=?", [id], callback);
+}

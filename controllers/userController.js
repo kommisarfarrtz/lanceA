@@ -76,3 +76,32 @@ exports.deleteUser = (req, res) => {
     return res.status(200).json({ message: "User deleted successfully" });
   });
 };
+
+exports.activateSeller = (req, res) => {
+  userModel.activateSeller(req.params.id, (err, results) => {
+    if (err) {
+      console.error("Database error:", err);
+      return res.status(500).json({ error: "Error activating seller" });
+    }
+
+    if (results.affectedRows === 0) {
+      return res.status(404).json({ error: "User not found" });
+    }
+
+    return res.status(200).json({ message: "User activated as seller" });
+  });
+}
+exports.deactivateSeller = (req, res) => {
+  userModel.deactivateSeller(req.params.id, (err, results) => {
+    if (err) {
+      console.error("Database error:", err);
+      return res.status(500).json({ error: "Error deactivating seller" });
+    }
+
+    if (results.affectedRows === 0) {
+      return res.status(404).json({ error: "User not found" });
+    }
+
+    return res.status(200).json({ message: "User deactivated as seller" });
+  });
+}
