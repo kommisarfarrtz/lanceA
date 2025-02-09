@@ -9,9 +9,7 @@ exports.getUserById = (id, callback) => {
 }
 
 exports.createUser = (user, callback) => {
-  db.query(
-    "INSERT INTO users (name, lastName, email, password, profile_picture, location, is_seller, stars) VALUES (?, ?, ?, ?, ?, ?, ?, ?)", 
-    [user.name,user.lastName,user.email,user.password,user.profile],callback);
+  db.query("INSERT INTO users (name,lastName,email,password,profile_picture,location,is_seller,stars) VALUES (?, ?,?,?,?,?,?,?)", [user.name,user.lastName, user.email,user.password,user.profile_picture,user.location,user.is_seller,user.stars], callback);
 }
 
 exports.updateUser = (id, user, callback) => {
