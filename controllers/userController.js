@@ -47,10 +47,14 @@ exports.updateUser = (req, res) => {
 exports.deleteUser = (req, res) => {
   userModel.deleteUser(req.params.id, (err, results) => {
     if (err) {
-      console.log(err);
-      res.status(500).send("Error deleting user");
-    } else {
-      res.status(200).send("User deleted successfully");
+      console.error("Database error:", err);
+      return res.status(500).send("Error deleting user");
     }
+    
+    if (results.affectedRows === 0) {
+      return res.status(404).send("User not found");
+    }
+
+    return res.status(200).send("User deleted successfully");
   });
-}
+};
