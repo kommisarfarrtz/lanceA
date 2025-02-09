@@ -78,17 +78,26 @@ exports.deleteUser = (req, res) => {
   });
 };
 
+<<<<<<< HEAD
 exports.activateUser = (req, res) => {
   userModel.activateUser(req.params.id, (err, results) => {
     if (err) {
       console.error("Database error:", err);
       return res.status(500).json({ error: "Error activating user" });
+=======
+exports.activateSeller = (req, res) => {
+  userModel.activateSeller(req.params.id, (err, results) => {
+    if (err) {
+      console.error("Database error:", err);
+      return res.status(500).json({ error: "Error activating seller" });
+>>>>>>> 4de74672a6d0fdce771457f006810f4cb379125a
     }
 
     if (results.affectedRows === 0) {
       return res.status(404).json({ error: "User not found" });
     }
 
+<<<<<<< HEAD
     return res.status(200).json({ message: "User activated successfully" });
   });
 }
@@ -98,12 +107,28 @@ exports.deactivateUser = (req, res) => {
     if (err) {
       console.error("Database error:", err);
       return res.status(500).json({ error: "Error deactivating user" });
+=======
+    return res.status(200).json({ message: "User activated as seller" });
+  });
+}
+exports.deactivateSeller = (req, res) => {
+  userModel.deactivateSeller(req.params.id, (err, results) => {
+    if (err) {
+      console.error("Database error:", err);
+      return res.status(500).json({ error: "Error deactivating seller" });
+>>>>>>> 4de74672a6d0fdce771457f006810f4cb379125a
     }
 
     if (results.affectedRows === 0) {
       return res.status(404).json({ error: "User not found" });
     }
 
+<<<<<<< HEAD
     return res.status(200).json({ message: "User deactivated successfully" });
   });
 }
+=======
+    return res.status(200).json({ message: "User deactivated as seller" });
+  });
+}
+>>>>>>> 4de74672a6d0fdce771457f006810f4cb379125a

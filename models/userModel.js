@@ -22,6 +22,7 @@ exports.deleteUser = (id, callback) => {
   db.query("DELETE FROM users WHERE id=?", [id], callback);
 }
 
+<<<<<<< HEAD
 exports.activateUser = (id, callback) => {
   db.query("UPDATE users SET is_seller=1 WHERE id=?", [id], callback);
 }
@@ -67,3 +68,11 @@ exports.deactivateUser = (id, callback) => {
     });
   });
 };
+=======
+exports.activateSeller = (id, callback) => {
+  db.query("UPDATE users SET is_seller=1 WHERE id=?", [id], callback);
+}
+exports.deactivateSeller = (id, callback) => {
+  db.query("UPDATE users SET is_seller=0 WHERE id=?", [id], callback);
+}
+>>>>>>> 4de74672a6d0fdce771457f006810f4cb379125a
