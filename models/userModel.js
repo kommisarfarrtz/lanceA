@@ -22,13 +22,13 @@ exports.deleteUser = (id, callback) => {
   db.query("DELETE FROM users WHERE id=?", [id], callback);
 }
 
-exports.activateUser = (id, callback) => {
+exports.activateSeller = (id, callback) => {
   db.query("UPDATE users SET is_seller=1 WHERE id=?", [id], callback);
 }
 
 
 // i want when the isSeller is deactivated the stars to be 0 and services that he has to be deleted
-exports.deactivateUser = (id, callback) => {
+exports.deactivateSeller = (id, callback) => {
   db.beginTransaction((err) => {
     if (err) {
       return callback(err);
