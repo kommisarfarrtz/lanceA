@@ -1,4 +1,5 @@
 const userModel = require("../models/userModel.js");
+const errorHandler = require("../middleware/errorHandler.js");
 
 exports.getUsers = (req, res) => {
   userModel.getUsers((err, results) => {
@@ -9,7 +10,7 @@ exports.getUsers = (req, res) => {
       res.status(200).json(results);
     }
   });
-}
+};
 
 exports.getUserById = (req, res) => {
   userModel.getUserById(req.params.id, (err, results) => {
@@ -20,7 +21,7 @@ exports.getUserById = (req, res) => {
       res.status(200).json(results);
     }
   });
-}
+};
 
 exports.createUser = (req, res) => {
   userModel.createUser(req.body, (err, results) => {
@@ -31,18 +32,17 @@ exports.createUser = (req, res) => {
       res.status(201).send("User created successfully");
     }
   });
-}
+};
 
-exports.updateUser = (req, res) => {
+exports.updateUser = (req, res, next) => {
   userModel.updateUser(req.params.id, req.body, (err, results) => {
     if (err) {
-      console.log(err);
-      res.status(500).send("Error updating user");
+      return next(err);
     } else {
       res.status(200).send("User updated successfully");
     }
   });
-}
+};
 
 exports.deleteUser = (req, res) => {
   userModel.deleteUser(req.params.id, (err, results) => {
