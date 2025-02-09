@@ -9,6 +9,9 @@ router.post("/",userController.createUser)
 router.put("/:id",userController.updateUser)
 router.delete("/:id",userController.deleteUser)
 
+router.put("/:id/activateSeller",userController.activateUser)
+router.put("/:id/deactivateSeller",userController.deactivateUser)
+
 
 
 

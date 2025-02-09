@@ -51,14 +51,8 @@ exports.createUser = (req, res) => {
 exports.updateUser = (req, res, next) => {
   userModel.updateUser(req.params.id, req.body, (err, results) => {
     if (err) {
-<<<<<<< HEAD
-      return next(err);
-    } else {
-      res.status(200).send("User updated successfully");
-=======
       console.error("Database error:", err);
       return res.status(500).json({ error: "Error updating user" });
->>>>>>> 49af0c40669bbd0069f964039dd7d5639f20824f
     }
 
     if (results.affectedRows === 0) {
@@ -83,3 +77,33 @@ exports.deleteUser = (req, res) => {
     return res.status(200).json({ message: "User deleted successfully" });
   });
 };
+
+exports.activateUser = (req, res) => {
+  userModel.activateUser(req.params.id, (err, results) => {
+    if (err) {
+      console.error("Database error:", err);
+      return res.status(500).json({ error: "Error activating user" });
+    }
+
+    if (results.affectedRows === 0) {
+      return res.status(404).json({ error: "User not found" });
+    }
+
+    return res.status(200).json({ message: "User activated successfully" });
+  });
+}
+
+exports.deactivateUser = (req, res) => {
+  userModel.deactivateUser(req.params.id, (err, results) => {
+    if (err) {
+      console.error("Database error:", err);
+      return res.status(500).json({ error: "Error deactivating user" });
+    }
+
+    if (results.affectedRows === 0) {
+      return res.status(404).json({ error: "User not found" });
+    }
+
+    return res.status(200).json({ message: "User deactivated successfully" });
+  });
+}
