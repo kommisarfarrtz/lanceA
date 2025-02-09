@@ -14,7 +14,8 @@ exports.createUser = (user, callback) => {
 
 exports.updateUser = (id, user, callback) => {
 
-  db.query("UPDATE users SET name=?, age=?, email=? WHERE id=?", [user.name, user.age, user.email, id], callback);
+  db.query("UPDATE users SET name=?,lastName=?,email=?,profile_picture=?,location=? WHERE id=?", [user.name,user.lastName, user.email,user.profile_picture,user.location, id], callback);
+
 }
 
 exports.deleteUser = (id, callback) => {
