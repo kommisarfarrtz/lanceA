@@ -11,8 +11,8 @@ router.put("/:id/activateSeller",userController.activateSeller)
 router.put("/:id/deactivateSeller",userController.deactivateSeller)
 router.delete("/:id",userController.deleteUser)
 
-router.put("/:id/activateSeller",userController.activateUser)
-router.put("/:id/deactivateSeller",userController.deactivateUser)
+router.post("/login" , userController.login)
+
 
 
 
