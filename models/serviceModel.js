@@ -212,7 +212,7 @@ exports.completedServices = (req, res) => {
 
     console.log(`Marking service ${idService} as completed by seller ${idSeller} for buyer ${idBuyer}`);
 
-    db.query("INSERT INTO completed_services (service_id, seller_id, buyer_id, status, completed_at) VALUES (?, ?, ?, ?, NOW())", [idService, idSeller, idBuyer, "completed"], (err, result) => {
+    db.query("INSERT INTO completed_services (service_id, seller_id, buyer_id, status) VALUES (?, ?, ?, ?)", [idService, idSeller, idBuyer, "completed"], (err, result) => {
         if (err) {
             console.error("Database error:", err);
             return res.status(500).json({ error: "Error updating service status" });
