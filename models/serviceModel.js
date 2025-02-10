@@ -113,7 +113,7 @@ exports.getServicesByCategory = (req, res) => {
 };
 exports.createService = (req, res) => {
     const { id } = req.params;
-    const { title, description, price, price_unit, category_id } = req.body;
+    const { title, description, price, price_unit, category_id,serviceCoverpic	 } = req.body;
 
     if (!id) {
         return res.status(400).json({ error: "User ID is required in the URL" });
@@ -122,8 +122,8 @@ exports.createService = (req, res) => {
     console.log("Creating service for User ID:", id);
 
     db.query(
-        "INSERT INTO services (title, description, price, price_unit, user_id, category_id) VALUES (?, ?, ?, ?, ?, ?)",
-        [title, description, price, price_unit, id, category_id],
+        "INSERT INTO services (title, description, price, price_unit, user_id, category_id,serviceCoverpic	) VALUES (?,?, ?, ?, ?, ?, ?)",
+        [title, description, price, price_unit, id, category_id,serviceCoverpic	],
         (err, results) => {
             if (err) {
                 console.error("Database error:", err);
