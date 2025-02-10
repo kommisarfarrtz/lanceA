@@ -113,13 +113,13 @@ exports.getServicesByCategory = (req, res) => {
 };
 
 exports.createService = (req, res) => {
-    const { name, description,serviceCoverpic, price, price_unit, category_id, user_id } = req.body;
+    const { title, description,serviceCoverpic, price, price_unit, category_id, user_id } = req.body;
 
-    if (!name || !description || !serviceCoverpic|| !price || !price_unit || !category_id || !user_id) {
+    if (!title || !description || !price || !price_unit || !category_id || !user_id || !serviceCoverpic) {
         return res.status(400).json({ error: "All required fields must be provided" });
     }
 
-    db.query("INSERT INTO services (title, description,serviceCoverpic, price, price_unit, category_id, user_id) VALUES (?,?, ?, ?, ?, ?, ?)", [name, description,serviceCoverpic, price, price_unit, category_id, user_id], (err, results) => {
+    db.query("INSERT INTO services (title, description, serviceCoverpic ,price, price_unit, category_id, user_id) VALUES (?, ?, ?, ?, ?, ?, ?)", [title, description, serviceCoverpic, price, price_unit, category_id, user_id], (err, results) => {
         if (err) {
             console.error("Database error:", err);
             return res.status(500).json({ error: "Error creating service" });
