@@ -111,20 +111,26 @@ exports.getServicesByCategory = (req, res) => {
         return res.status(200).json(Object.values(categories));
     });
 };
-
 exports.createService = (req, res) => {
-    const { title, description,serviceCoverpic, price, price_unit, category_id, user_id } = req.body;
+    const { id } = req.params;
+    const { title, description, price, price_unit, category_id } = req.body;
 
-    if (!title || !description || !price || !price_unit || !category_id || !user_id || !serviceCoverpic) {
-        return res.status(400).json({ error: "All required fields must be provided" });
+    if (!id) {
+        return res.status(400).json({ error: "User ID is required in the URL" });
     }
 
-    db.query("INSERT INTO services (title, description, serviceCoverpic ,price, price_unit, category_id, user_id) VALUES (?, ?, ?, ?, ?, ?, ?)", [title, description, serviceCoverpic, price, price_unit, category_id, user_id], (err, results) => {
-        if (err) {
-            console.error("Database error:", err);
-            return res.status(500).json({ error: "Error creating service" });
-        }
+    console.log("Creating service for User ID:", id);
 
-        return res.status(201).json({ message: "Service created successfully", serviceId: results.insertId });
-    });
-}
+    db.query(
+        "INSERT INTO services (title, description, price, price_unit, user_id, category_id) VALUES (?, ?, ?, ?, ?, ?)",
+        [title, description, price, price_unit, id, category_id],
+        (err, results) => {
+            if (err) {
+                console.error("Database error:", err);
+                return res.status(500).json({ error: "Error creating service" });
+            }
+
+            return res.status(201).json({ message: "Service created successfully" });
+        }
+    );
+};
