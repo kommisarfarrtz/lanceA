@@ -16,5 +16,5 @@ exports.deleteService = (req, res) => {
     servicesModel.deleteService(req, res);
 }
 exports.approvedServices = (req, res) => {
-    servicesModel.completedServices(req, res);
+    servicesModel.approvedServices(req, res);
 }
