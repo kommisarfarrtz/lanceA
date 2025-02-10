@@ -135,7 +135,6 @@ exports.createService = (req, res) => {
     );
 };
 
-
 exports.deleteService = (req, res) => {
     const { id } = req.params;
 
@@ -153,23 +152,76 @@ exports.deleteService = (req, res) => {
     });
 };
 
-exports.createCompletedService = (req, res) => {
-    const { service_id, buyer_id, seller_id } = req.params;
+exports.getServiceById = (req, res) => {
+    const { id } = req.params;
 
-    if (!service_id || !buyer_id || !seller_id) {
-        return res.status(400).json({ error: "Service ID, Buyer ID, and Seller ID are required in the URL" });
+    if (!id) {
+        return res.status(400).json({ error: "Service ID is required in the URL" });
     }
 
-    db.query(
-        "INSERT INTO completed_services (service_id, buyer_id, seller_id) VALUES (?, ?, ?)",
-        [service_id, buyer_id, seller_id],
-        (err) => {
-            if (err) {
-                console.error("Database error:", err);
-                return res.status(500).json({ error: "Error creating completed service" });
-            }
+    const query = `
+        SELECT 
+            services.*, 
+            users.name AS user_name,
+            users.lastName AS user_lastName, 
+            users.email AS user_email, 
+            users.profile_picture AS user_profilepic 
+        FROM services 
+        JOIN users ON services.user_id = users.id 
+        WHERE services.id = ?
+    `;
 
-            return res.status(201).json({ message: "Completed service created successfully" });
+    db.query(query, [id], (err, results) => {
+        if (err) {
+            console.error("Database error:", err);
+            return res.status(500).json({ error: "Error retrieving service from database" });
         }
-    );
+
+        if (!results.length) {
+            return res.status(404).json({ message: "Service not found" });
+        }
+
+        const { id, title, description, serviceCoverpic, price, price_unit, user_id, category_id, created_at, user_name, user_email, user_profilepic , user_lastName } = results[0];
+
+        return res.status(200).json({
+            id,
+            title,
+            description,
+            coverpic: serviceCoverpic,
+            price,
+            price_unit,
+            user_id,
+            category_id,
+            created_at,
+            owner: {
+                name: user_name,
+                lastname : user_lastName,
+                email: user_email,
+                profilepic: user_profilepic
+            }
+        });
+    });
+};
+
+exports.completedServices = (req, res) => {
+    const { idService, idSeller, idBuyer } = req.params;
+
+    if (!idService || !idSeller || !idBuyer) {
+        return res.status(400).json({ error: "Missing required parameters" });
+    }
+
+    console.log(`Marking service ${idService} as completed by seller ${idSeller} for buyer ${idBuyer}`);
+
+    db.query("INSERT INTO completed_services (service_id, seller_id, buyer_id, status, completed_at) VALUES (?, ?, ?, ?, NOW())", [idService, idSeller, idBuyer, "completed"], (err, result) => {
+        if (err) {
+            console.error("Database error:", err);
+            return res.status(500).json({ error: "Error updating service status" });
+        }
+
+        if (result.affectedRows === 0) {
+            return res.status(404).json({ error: "Service not found or unauthorized action" });
+        }
+
+        return res.status(200).json({ message: "Service marked as completed successfully" });
+    });
 };
