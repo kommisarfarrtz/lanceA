@@ -106,23 +106,3 @@ exports.deactivateSeller = (req, res) => {
   });
 }
 
-exports.login = (req, res) => {
-  const { email, password } = req.body;
-
-  if (!email || !password) {
-    return res.status(400).json({ error: "Email and password must be provided" });
-  }
-
-  userModel.login(email, password, (err, results) => {
-    if (err) {
-      console.error("Database error:", err);
-      return res.status(500).json({ error: "Error logging in" });
-    }
-
-    if (!results.length) {
-      return res.status(404).json({ error: "User not found" });
-    }
-
-    return res.status(200).json({ message: "User logged in successfully", user: results[0] });
-  });
-};

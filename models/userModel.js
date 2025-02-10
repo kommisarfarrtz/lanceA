@@ -26,6 +26,8 @@ exports.activateSeller = (id, callback) => {
   db.query("UPDATE users SET is_seller=1 WHERE id=?", [id], callback);
 }
 
+
+// i want when the isSeller is deactivated the stars to be 0 and services that he has to be deleted
 exports.deactivateSeller = (id, callback) => {
   db.beginTransaction((err) => {
     if (err) {
@@ -66,7 +68,3 @@ exports.deactivateSeller = (id, callback) => {
   });
 };
 
-
-exports.login = (email, password, callback) => {
-  db.query("SELECT * FROM users WHERE email=? AND password=?", [email, password], callback);
-}
