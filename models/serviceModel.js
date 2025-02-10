@@ -134,3 +134,22 @@ exports.createService = (req, res) => {
         }
     );
 };
+
+exports.deleteService = (req, res) => {
+    const { id } = req.params;
+
+    if (!id) {
+        return res.status(400).json({ error: "Service ID is required in the URL" });
+    }
+
+    db.query("DELETE FROM services WHERE id = ?", [id], (err, results) => {
+        if (err) {
+            console.error("Database error:", err);
+            return res.status(500).json({ error: "Error deleting service" });
+        }
+
+        return res.status(200).json({ message: "Service deleted successfully" });
+    });
+};
+
+l
