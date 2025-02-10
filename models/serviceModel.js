@@ -113,7 +113,7 @@ exports.getServicesByCategory = (req, res) => {
 };
 exports.createService = (req, res) => {
     const { id } = req.params;
-    const { title, description, price, price_unit, category_id } = req.body;
+    const { title, description, serviceCoverpic, price, price_unit, category_id } = req.body;
 
     if (!id) {
         return res.status(400).json({ error: "User ID is required in the URL" });
@@ -122,9 +122,9 @@ exports.createService = (req, res) => {
     console.log("Creating service for User ID:", id);
 
     db.query(
-        "INSERT INTO services (title, description, price, price_unit, user_id, category_id) VALUES (?, ?, ?, ?, ?, ?)",
-        [title, description, price, price_unit, id, category_id],
-        (err, results) => {
+        "INSERT INTO services (title, description, serviceCoverpic, price, price_unit, user_id, category_id) VALUES (?, ?, ?, ?, ?, ?, ?)",
+        [title, description, serviceCoverpic || null, price, price_unit, id, category_id],
+        (err) => {
             if (err) {
                 console.error("Database error:", err);
                 return res.status(500).json({ error: "Error creating service" });
@@ -134,6 +134,7 @@ exports.createService = (req, res) => {
         }
     );
 };
+
 
 exports.deleteService = (req, res) => {
     const { id } = req.params;
@@ -151,5 +152,3 @@ exports.deleteService = (req, res) => {
         return res.status(200).json({ message: "Service deleted successfully" });
     });
 };
-
-l

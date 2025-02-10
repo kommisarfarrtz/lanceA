@@ -11,3 +11,7 @@ exports.getServicesByCategory = (req, res) => {
 exports.createService = (req, res) => {
     servicesModel.createService(req, res);
 }
+
+exports.deleteService = (req, res) => {
+    servicesModel.deleteService(req, res);
+}
