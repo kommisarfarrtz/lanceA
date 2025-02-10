@@ -123,7 +123,7 @@ exports.createService = (req, res) => {
 
     db.query(
         "INSERT INTO services (title, description, serviceCoverpic, price, price_unit, user_id, category_id) VALUES (?, ?, ?, ?, ?, ?, ?)",
-        [title, description, serviceCoverpic || null, price, price_unit, id, category_id],
+        [title, description, serviceCoverpic, price, price_unit, id, category_id],
         (err) => {
             if (err) {
                 console.error("Database error:", err);
