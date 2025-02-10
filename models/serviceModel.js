@@ -152,3 +152,24 @@ exports.deleteService = (req, res) => {
         return res.status(200).json({ message: "Service deleted successfully" });
     });
 };
+
+exports.createCompletedService = (req, res) => {
+    const { service_id, buyer_id, seller_id } = req.params;
+
+    if (!service_id || !buyer_id || !seller_id) {
+        return res.status(400).json({ error: "Service ID, Buyer ID, and Seller ID are required in the URL" });
+    }
+
+    db.query(
+        "INSERT INTO completed_services (service_id, buyer_id, seller_id) VALUES (?, ?, ?)",
+        [service_id, buyer_id, seller_id],
+        (err) => {
+            if (err) {
+                console.error("Database error:", err);
+                return res.status(500).json({ error: "Error creating completed service" });
+            }
+
+            return res.status(201).json({ message: "Completed service created successfully" });
+        }
+    );
+};
