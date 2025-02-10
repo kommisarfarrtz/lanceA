@@ -111,3 +111,20 @@ exports.getServicesByCategory = (req, res) => {
         return res.status(200).json(Object.values(categories));
     });
 };
+
+exports.createService = (req, res) => {
+    const { name, description, price, price_unit, category_id, user_id } = req.body;
+
+    if (!name || !description || !price || !price_unit || !category_id || !user_id) {
+        return res.status(400).json({ error: "All required fields must be provided" });
+    }
+
+    db.query("INSERT INTO services (name, description, price, price_unit, category_id, user_id) VALUES (?, ?, ?, ?, ?, ?)", [name, description, price, price_unit, category_id, user_id], (err, results) => {
+        if (err) {
+            console.error("Database error:", err);
+            return res.status(500).json({ error: "Error creating service" });
+        }
+
+        return res.status(201).json({ message: "Service created successfully", serviceId: results.insertId });
+    });
+}

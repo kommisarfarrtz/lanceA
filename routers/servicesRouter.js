@@ -5,6 +5,7 @@ const serviceController=require("../controllers/servicesController.js")
 router.get("/", serviceController.getServices);
 
 router.get("/category", serviceController.getServicesByCategory);
+router.post("/", serviceController.createService);
 
 
 

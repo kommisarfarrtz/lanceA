@@ -7,3 +7,7 @@ exports.getServices = (req, res) => {
 exports.getServicesByCategory = (req, res) => {
     servicesModel.getServicesByCategory(req, res);
 }
+
+exports.createService = (req, res) => {
+    servicesModel.createService(req, res);
+}
