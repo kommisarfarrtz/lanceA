@@ -203,7 +203,7 @@ exports.getServiceById = (req, res) => {
     });
 };
 
-exports.completedServices = (req, res) => {
+exports.approvedServices = (req, res) => {
     const { idService, idSeller, idBuyer } = req.params;
 
     if (!idService || !idSeller || !idBuyer) {
@@ -212,7 +212,7 @@ exports.completedServices = (req, res) => {
 
     console.log(`Marking service ${idService} as completed by seller ${idSeller} for buyer ${idBuyer}`);
 
-    db.query("INSERT INTO completed_services (service_id, seller_id, buyer_id, status) VALUES (?, ?, ?, ?)", [idService, idSeller, idBuyer, "completed"], (err, result) => {
+    db.query("INSERT INTO completed_services (service_id, seller_id, buyer_id) VALUES (?, ?, ?)", [idService, idSeller, idBuyer], (err, result) => {
         if (err) {
             console.error("Database error:", err);
             return res.status(500).json({ error: "Error updating service status" });
@@ -222,6 +222,6 @@ exports.completedServices = (req, res) => {
             return res.status(404).json({ error: "Service not found or unauthorized action" });
         }
 
-        return res.status(200).json({ message: "Service marked as completed successfully" });
+        return res.status(200).json({ message: "Service marked as pending successfully" });
     });
 };
