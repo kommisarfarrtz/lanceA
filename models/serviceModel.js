@@ -203,7 +203,7 @@ exports.getServiceById = (req, res) => {
     });
 };
 
-exports.completedServices = (req, res) => {
+exports.approvedServices = (req, res) => {
     const { idService, idSeller, idBuyer } = req.params;
 
     if (!idService || !idSeller || !idBuyer) {
