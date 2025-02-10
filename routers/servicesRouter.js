@@ -8,6 +8,8 @@ router.get("/category", serviceController.getServicesByCategory);
 router.post("/:id", serviceController.createService);
 router.delete("/:id", serviceController.deleteService);
 
+router.post("/:idService/:idSeller/:idBuyer", serviceController.completedServices);
+
 
 
 

@@ -15,3 +15,6 @@ exports.createService = (req, res) => {
 exports.deleteService = (req, res) => {
     servicesModel.deleteService(req, res);
 }
+exports.completedServices = (req, res) => {
+    servicesModel.completedServices(req, res);
+}
