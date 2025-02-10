@@ -113,7 +113,7 @@ exports.getServicesByCategory = (req, res) => {
 };
 exports.createService = (req, res) => {
     const { id } = req.params;
-    const { title, description, price, price_unit, category_id,serviceCoverpic	 } = req.body;
+    const { title, description, serviceCoverpic, price, price_unit, category_id } = req.body;
 
     if (!id) {
         return res.status(400).json({ error: "User ID is required in the URL" });
@@ -122,9 +122,9 @@ exports.createService = (req, res) => {
     console.log("Creating service for User ID:", id);
 
     db.query(
-        "INSERT INTO services (title, description, price, price_unit, user_id, category_id,serviceCoverpic	) VALUES (?,?, ?, ?, ?, ?, ?)",
-        [title, description, price, price_unit, id, category_id,serviceCoverpic	],
-        (err, results) => {
+        "INSERT INTO services (title, description, serviceCoverpic, price, price_unit, user_id, category_id) VALUES (?, ?, ?, ?, ?, ?, ?)",
+        [title, description, serviceCoverpic, price, price_unit, id, category_id],
+        (err) => {
             if (err) {
                 console.error("Database error:", err);
                 return res.status(500).json({ error: "Error creating service" });
@@ -133,4 +133,22 @@ exports.createService = (req, res) => {
             return res.status(201).json({ message: "Service created successfully" });
         }
     );
+};
+
+
+exports.deleteService = (req, res) => {
+    const { id } = req.params;
+
+    if (!id) {
+        return res.status(400).json({ error: "Service ID is required in the URL" });
+    }
+
+    db.query("DELETE FROM services WHERE id = ?", [id], (err, results) => {
+        if (err) {
+            console.error("Database error:", err);
+            return res.status(500).json({ error: "Error deleting service" });
+        }
+
+        return res.status(200).json({ message: "Service deleted successfully" });
+    });
 };
