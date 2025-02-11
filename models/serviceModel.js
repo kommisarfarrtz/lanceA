@@ -1,5 +1,4 @@
 const db = require("../db.js");
-
 exports.getServices = (req, res) => {
     const { name, user } = req.query;
     let query = "SELECT services.*, users.id AS user_id, users.name AS user_name, users.email AS user_email FROM services JOIN users ON services.user_id = users.id";
@@ -47,7 +46,7 @@ exports.getServices = (req, res) => {
     });
 };
 
-exports.getServicesByCategory = (req, res) => {
+exports.getServicesByCategory = (_, res) => {
     const query = `
         SELECT 
             categories.id AS category_id, 
@@ -142,7 +141,7 @@ exports.deleteService = (req, res) => {
         return res.status(400).json({ error: "Service ID is required in the URL" });
     }
 
-    db.query("DELETE FROM services WHERE id = ?", [id], (err, results) => {
+    db.query("DELETE FROM services WHERE id = ?", [id], (err) => {
         if (err) {
             console.error("Database error:", err);
             return res.status(500).json({ error: "Error deleting service" });
@@ -271,7 +270,7 @@ exports.getReviews = (req, res) => {
     });
 }
 
-exports.getAllCategories = (req, res) => {
+exports.getAllCategories = (_, res) => {
     db.query("SELECT * FROM categories", (err, results) => {
         if (err) {
             console.error("Database error:", err);
@@ -331,10 +330,13 @@ exports.deleteImages = (req, res) => {
         return res.status(400).json({ error: "Service ID is required in the URL" });
     }
 
-    db.query("DELETE FROM service_images WHERE service_id = ?", [service_id], (err, results) => {
+    db.query("DELETE FROM service_images WHERE service_id = ?", [service_id], (err,results) => {
         if (err) {
             console.error("Database error:", err);
             return res.status(500).json({ error: "Error deleting images" });
+        }
+        if (results.affectedRows === 0) {
+            return res.status(404).json({ message: "Images not found" });
         }
 
         return res.status(200).json({ message: "Images deleted successfully" });
