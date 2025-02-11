@@ -18,3 +18,6 @@ exports.deleteService = (req, res) => {
 exports.approvedServices = (req, res) => {
     servicesModel.approvedServices(req, res);
 }
+exports.addImages = (req, res) => {
+    servicesModel.addImages(req, res);
+}

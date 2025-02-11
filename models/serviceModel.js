@@ -225,3 +225,27 @@ exports.approvedServices = (req, res) => {
         return res.status(200).json({ message: "Service marked as pending successfully" });
     });
 };
+
+exports.addImages = (req, res) => {
+    const { id } = req.params;
+    const { images } = req.body;
+
+    if (!id) {
+        return res.status(400).json({ error: "Service ID is required in the URL" });
+    }
+
+    if (!images || !images.length) {
+        return res.status(400).json({ error: "No images provided" });
+    }
+
+    console.log(`Adding ${images.length} images to service ${id}`);
+
+    db.query("INSERT INTO service_images (service_id, service_img) VALUES ?", [images.map(image => [id, image])], (err) => {
+        if (err) {
+            console.error("Database error:", err);
+            return res.status(500).json({ error: "Error adding images to service" });
+        }
+
+        return res.status(201).json({ message: "Images added to service successfully" });
+    });
+};

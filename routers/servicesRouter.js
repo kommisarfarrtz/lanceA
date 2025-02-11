@@ -10,6 +10,7 @@ router.delete("/:id", serviceController.deleteService);
 
 router.post("/:idService/:idSeller/:idBuyer", serviceController.approvedServices);
 
+router.post("/images/:id", serviceController.addImages);
 
 
 
