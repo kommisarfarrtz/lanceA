@@ -14,6 +14,10 @@ router.post("/images/:id", serviceController.addImages);
 router.delete("/images/:id", serviceController.deleteImages);
 
 router.get("/reviews/id", serviceController.getReviews);
+
 router.get("/AllCategories", serviceController.getAllCategories);
+
+router.delete("/deleteImages/:service_id", serviceController.deleteImages);
+
 
 module.exports= router

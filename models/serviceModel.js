@@ -299,6 +299,10 @@ exports.deleteCategory = (req, res) => {
             return res.status(500).json({ error: "Error deleting category" });
         }
 
+        if (results.affectedRows === 0) {
+            return res.status(404).json({ message: "Category not found" });
+        }
+
         return res.status(200).json({ message: "Category deleted successfully" });
     });
 }
@@ -321,6 +325,7 @@ exports.createCategory = (req, res) => {
 }
 
 exports.deleteImages = (req, res) => {
+<<<<<<< HEAD
     const { id } = req.params;
 
     if (!id) {
@@ -328,6 +333,15 @@ exports.deleteImages = (req, res) => {
     }
 
     db.query("DELETE FROM service_images WHERE service_id = ?", [id], (err, results) => {
+=======
+    const { service_id } = req.params;
+
+    if (!service_id) {
+        return res.status(400).json({ error: "Service ID is required in the URL" });
+    }
+
+    db.query("DELETE FROM service_images WHERE service_id = ?", [service_id], (err, results) => {
+>>>>>>> 3b1b325da53a4bcefe4239fa529a45551f83e1ab
         if (err) {
             console.error("Database error:", err);
             return res.status(500).json({ error: "Error deleting images" });
@@ -335,4 +349,8 @@ exports.deleteImages = (req, res) => {
 
         return res.status(200).json({ message: "Images deleted successfully" });
     });
+<<<<<<< HEAD
 }
+=======
+};
+>>>>>>> 3b1b325da53a4bcefe4239fa529a45551f83e1ab
