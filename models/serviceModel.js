@@ -319,3 +319,20 @@ exports.createCategory = (req, res) => {
         return res.status(201).json({ message: "Category created successfully" });
     });
 }
+
+exports.deleteImages = (req, res) => {
+    const { service_id } = req.params;
+
+    if (!service_id) {
+        return res.status(400).json({ error: "Service ID is required in the URL" });
+    }
+
+    db.query("DELETE FROM service_images WHERE service_id = ?", [service_id], (err, results) => {
+        if (err) {
+            console.error("Database error:", err);
+            return res.status(500).json({ error: "Error deleting images" });
+        }
+
+        return res.status(200).json({ message: "Images deleted successfully" });
+    });
+};

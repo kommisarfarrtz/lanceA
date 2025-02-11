@@ -13,6 +13,10 @@ router.post("/:idService/:idSeller/:idBuyer", serviceController.approvedServices
 router.post("/images/:id", serviceController.addImages);
 
 router.get("/reviews/id", serviceController.getReviews);
+
 router.get("/AllCategories", serviceController.getAllCategories);
+
+router.delete("/deleteImages/:service_id", serviceController.deleteImages);
+
 
 module.exports= router
