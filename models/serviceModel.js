@@ -339,8 +339,4 @@ exports.deleteImages = (req, res) => {
 
         return res.status(200).json({ message: "Images deleted successfully" });
     });
-<<<<<<< HEAD
-}
-=======
 };
->>>>>>> 3b1b325da53a4bcefe4239fa529a45551f83e1ab
