@@ -1,1 +1,1 @@
-const adminModel = require("../controllers/adminModel.js")
+const adminModel = require("../models/adminModel.js")
