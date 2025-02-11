@@ -36,3 +36,6 @@ exports.deleteCategory = (req, res) => {
     servicesModel.deleteCategory(req, res);
 }
 
+exports.deleteImages = (req, res) => {
+    servicesModel.deleteImages(req, res);
+}

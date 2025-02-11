@@ -11,6 +11,7 @@ router.delete("/:id", serviceController.deleteService);
 router.post("/:idService/:idSeller/:idBuyer", serviceController.approvedServices);
 
 router.post("/images/:id", serviceController.addImages);
+router.delete("/images/:id", serviceController.deleteImages);
 
 router.get("/reviews/id", serviceController.getReviews);
 router.get("/AllCategories", serviceController.getAllCategories);
