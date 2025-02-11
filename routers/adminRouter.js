@@ -4,6 +4,7 @@ const userController=require("../controllers/userController.js")
 const servicesController=require("../controllers/servicesController.js")
 
 router.get("/users", userController.getUsers);
+router.delete("/users/:id", userController.deleteUser);
 router.get("/services", servicesController.getServices);
 router.delete("/services/:id", servicesController.deleteService);
 router.post("/category", servicesController.createCategory);
