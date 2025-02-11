@@ -285,3 +285,37 @@ exports.getAllCategories = (req, res) => {
         return res.status(200).json(results);
     });
 }
+
+exports.deleteCategory = (req, res) => {
+    const { id } = req.params;
+
+    if (!id) {
+        return res.status(400).json({ error: "Category ID is required in the URL" });
+    }
+
+    db.query("DELETE FROM categories WHERE id = ?", [id], (err, results) => {
+        if (err) {
+            console.error("Database error:", err);
+            return res.status(500).json({ error: "Error deleting category" });
+        }
+
+        return res.status(200).json({ message: "Category deleted successfully" });
+    });
+}
+
+exports.createCategory = (req, res) => {
+    const { name } = req.body;
+
+    if (!name) {
+        return res.status(400).json({ error: "Category name is required" });
+    }
+
+    db.query("INSERT INTO categories (name) VALUES (?)", [name], (err) => {
+        if (err) {
+            console.error("Database error:", err);
+            return res.status(500).json({ error: "Error creating category" });
+        }
+
+        return res.status(201).json({ message: "Category created successfully" });
+    });
+}

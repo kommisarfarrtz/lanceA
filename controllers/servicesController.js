@@ -29,4 +29,10 @@ exports.getReviews = (req, res) => {
 exports.getAllCategories = (req, res) => {
     servicesModel.getAllCategories(req, res);
 }
+exports.createCategory = (req, res) => {
+    servicesModel.createCategory(req, res);
+}
+exports.deleteCategory = (req, res) => {
+    servicesModel.deleteCategory(req, res);
+}
 
