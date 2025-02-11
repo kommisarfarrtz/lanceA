@@ -299,6 +299,10 @@ exports.deleteCategory = (req, res) => {
             return res.status(500).json({ error: "Error deleting category" });
         }
 
+        if (results.affectedRows === 0) {
+            return res.status(404).json({ message: "Category not found" });
+        }
+
         return res.status(200).json({ message: "Category deleted successfully" });
     });
 }
