@@ -1,3 +1,4 @@
+const e = require("express");
 const servicesModel = require("../models/serviceModel.js");
 
 exports.getServices = (req, res) => {
@@ -21,3 +22,11 @@ exports.approvedServices = (req, res) => {
 exports.addImages = (req, res) => {
     servicesModel.addImages(req, res);
 }
+exports.getReviews = (req, res) => {
+    servicesModel.getReviews(req, res);
+}
+
+exports.getAllCategories = (req, res) => {
+    servicesModel.getAllCategories(req, res);
+}
+

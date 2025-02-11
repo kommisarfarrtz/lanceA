@@ -12,6 +12,7 @@ router.post("/:idService/:idSeller/:idBuyer", serviceController.approvedServices
 
 router.post("/images/:id", serviceController.addImages);
 
-
+router.get("/reviews/id", serviceController.getReviews);
+router.get("/AllCategories", serviceController.getAllCategories);
 
 module.exports= router
