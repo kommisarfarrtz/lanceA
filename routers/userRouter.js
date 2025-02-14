@@ -11,4 +11,5 @@ router.put("/:id/activateSeller",userController.activateSeller)
 router.put("/:id/deactivateSeller",userController.deactivateSeller)
 router.delete("/:id",userController.deleteUser)
 
+
 module.exports= router

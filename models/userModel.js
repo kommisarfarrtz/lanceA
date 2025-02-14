@@ -68,3 +68,14 @@ exports.deactivateSeller = (id, callback) => {
   });
 };
 
+exports.getUserByEmail = (email, callback) => {
+    const query = "SELECT * FROM users WHERE email = ?";
+    
+    db.query(query, [email], (err, results) => {
+        if (err) {
+            return callback(err);
+        }
+        callback(null, results[0]);
+    });
+};
+

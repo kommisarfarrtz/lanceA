@@ -1,5 +1,7 @@
 const userModel = require("../models/userModel.js");
-const createError = require("../middleware/middleware.js");
+const { createError } = require("../middleware/errorHa.js");
+
+const jwt = require('jsonwebtoken');
 
 exports.getUsers = async (req, res, next) => {
   userModel.getUsers((err, results) => {
@@ -26,7 +28,7 @@ exports.getUserById = (req, res, next) => {
 };
 
 exports.createUser = (req, res, next) => {
-  const { name, lastName, email, password, location, is_seller } = req.body;
+  const { name, lastName, email, password, location } = req.body;
 
   if (!name || !lastName || !email || !password || !location) {
     return next(createError(400, "All required fields must be provided"));
@@ -85,5 +87,44 @@ exports.deactivateSeller = (req, res, next) => {
 
     return res.status(200).send("User deactivated as seller");
   });
+};
+
+exports.login = async (req, res, next) => {
+    const { email, password } = req.body;
+
+    // Check if email and password are provided
+    if (!email || !password) {
+        return next(createError(400, "Please provide email and password"));
+    }
+
+    userModel.getUserByEmail(email, async (err, user) => {
+        if (err) return next(err);
+        
+        if (!user) {
+            return next(createError(404, "User not found"));
+        }
+
+        // Simple password check
+        if (password !== user.password) {
+            return next(createError(400, "Wrong password or email"));
+        }
+
+        // Create token
+        const token = jwt.sign(
+            { userId: user.id, email: user.email },
+            process.env.JWT_SECRET,
+            { expiresIn: '24h' }
+        );
+
+        // Remove password from user object
+        const { password: _, ...userWithoutPassword } = user;
+
+        res.status(200).json({
+            success: true,
+            message: "Login successful",
+            user: userWithoutPassword,
+            token
+        });
+    });
 };
 
