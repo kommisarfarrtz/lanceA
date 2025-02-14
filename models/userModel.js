@@ -9,8 +9,9 @@ exports.getUserById = (id, callback) => {
 }
 
 exports.createUser = (user, callback) => {
-  db.query("INSERT INTO users (name,lastName,email,password,profile_picture,location,is_seller,stars) VALUES (?, ?,?,?,?,?,?,?)", [user.name,user.lastName, user.email,user.password,user.profile_picture,user.location,user.is_seller,user.stars], callback);
+  db.query("INSERT INTO users (name,lastName,email,password,profile_picture,location,is_seller,bio,stars) VALUES (?, ?,?,?,?,?,?,?,?)", [user.name,user.lastName, user.email,user.password,user.profile_picture,user.location,user.is_seller,user.bio,user.stars], callback);
 }
+
 
 exports.updateUser = (id, user, callback) => {
 
@@ -19,7 +20,7 @@ exports.updateUser = (id, user, callback) => {
 }
 
 exports.deleteUser = (id, callback) => {
-  db.query("DELETE FROM users WHERE id=?", [id], callback);
+  db.query("update users set is_active=0 WHERE id=?", [id], callback);
 }
 
 exports.activateSeller = (id, callback) => {
@@ -27,14 +28,13 @@ exports.activateSeller = (id, callback) => {
 }
 
 
-// i want when the isSeller is deactivated the stars to be 0 and services that he has to be deleted
 exports.deactivateSeller = (id, callback) => {
   db.beginTransaction((err) => {
     if (err) {
       return callback(err);
     }
 
-    db.query("UPDATE users SET is_seller=0, stars=0 WHERE id=?", [id], (err, results) => {
+    db.query("UPDATE users SET is_seller=0  WHERE id=?", [id], (err, results) => {
       if (err) {
         return db.rollback(() => {
           callback(err);
@@ -47,7 +47,7 @@ exports.deactivateSeller = (id, callback) => {
         });
       }
 
-      db.query("DELETE FROM services WHERE user_id=?", [id], (err, results) => {
+      db.query("update services set is_active=0 WHERE user_id=?", [id], (err, results) => {
         if (err) {
           return db.rollback(() => {
             callback(err);

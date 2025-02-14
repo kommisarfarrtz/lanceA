@@ -1,108 +1,89 @@
 const userModel = require("../models/userModel.js");
+const createError = require("../middleware/middleware.js");
 
-exports.getUsers = (req, res) => {
+exports.getUsers = async (req, res, next) => {
   userModel.getUsers((err, results) => {
-    if (err) {
-      console.error("Database error:", err);
-      return res.status(500).json({ error: "Error retrieving users from database" });
-    }
+    if (err) return next(err);
 
     if (!results.length) {
-      return res.status(404).json({ message: "No users found" });
+      return next(createError(404, "No users found")); 
     }
 
-    return res.status(200).json(results);
+    res.status(200).send(results); 
   });
 };
 
-exports.getUserById = (req, res) => {
+exports.getUserById = (req, res, next) => {
   userModel.getUserById(req.params.id, (err, results) => {
-    if (err) {
-      console.error("Database error:", err);
-      return res.status(500).json({ error: "Error retrieving user from database" });
-    }
+    if (err) return next(err);
 
     if (!results.length) {
-      return res.status(404).json({ error: "User not found" });
+      return next(createError(404, "User not found"));
     }
 
-    return res.status(200).json(results[0]); // Assuming the query returns an array
+    return res.status(200).send(results);
   });
 };
 
-exports.createUser = (req, res) => {
+exports.createUser = (req, res, next) => {
   const { name, lastName, email, password, location, is_seller } = req.body;
 
   if (!name || !lastName || !email || !password || !location) {
-    return res.status(400).json({ error: "All required fields must be provided" });
+    return next(createError(400, "All required fields must be provided"));
   }
 
   userModel.createUser(req.body, (err, results) => {
-    if (err) {
-      console.error("Database error:", err);
-      return res.status(500).json({ error: "Error creating user" });
-    }
+    if (err) return next(err);
 
-    return res.status(201).json({ message: "User created successfully", userId: results.insertId });
+    return res.status(201).send({ message: "User created successfully", userId: results.insertId });
   });
 };
 
 exports.updateUser = (req, res, next) => {
   userModel.updateUser(req.params.id, req.body, (err, results) => {
-    if (err) {
-      console.error("Database error:", err);
-      return res.status(500).json({ error: "Error updating user" });
-    }
+    if (err) return next(err);
 
     if (results.affectedRows === 0) {
-      return res.status(404).json({ error: "User not found" });
+      return next(createError(404, "User not found"));
     }
 
-    return res.status(200).json({ message: "User updated successfully" });
+    return res.status(200).send("User updated successfully");
   });
 };
 
-exports.deleteUser = (req, res) => {
+exports.deleteUser = (req, res, next) => {
   userModel.deleteUser(req.params.id, (err, results) => {
-    if (err) {
-      console.error("Database error:", err);
-      return res.status(500).json({ error: "Error deleting user" });
-    }
+    if (err) return next(err);
 
     if (results.affectedRows === 0) {
-      return res.status(404).json({ error: "User not found" });
+      return next(createError(404, "User not found"));
     }
 
-    return res.status(200).json({ message: "User deleted successfully" });
+    return res.status(200).send("User deleted successfully");
   });
 };
 
-exports.activateSeller = (req, res) => {
+exports.activateSeller = (req, res, next) => {
   userModel.activateSeller(req.params.id, (err, results) => {
-    if (err) {
-      console.error("Database error:", err);
-      return res.status(500).json({ error: "Error activating seller" });
-    }
+    if (err) return next(err);
 
     if (results.affectedRows === 0) {
-      return res.status(404).json({ error: "User not found" });
+      return next(createError(404, "User not found"));
     }
 
-    return res.status(200).json({ message: "User activated as seller" });
+    return res.status(200).send("User activated as seller");
   });
-}
-exports.deactivateSeller = (req, res) => {
+};
+
+exports.deactivateSeller = (req, res, next) => {
   userModel.deactivateSeller(req.params.id, (err, results) => {
-    if (err) {
-      console.error("Database error:", err);
-      return res.status(500).json({ error: "Error deactivating seller" });
-    }
+    if (err) return next(err);
 
     if (results.affectedRows === 0) {
-      return res.status(404).json({ error: "User not found" });
+      return next(createError(404, "User not found"));
     }
 
-    return res.status(200).json({ message: "User deactivated as seller" });
+    return res.status(200).send("User deactivated as seller");
   });
-}
+};
 

@@ -1,4 +1,4 @@
-const express = require("express")
+/*const express = require("express")
 const router=express.Router()
 const userController=require("../controllers/userController.js")
 const servicesController=require("../controllers/servicesController.js")
@@ -10,4 +10,4 @@ router.delete("/services/:id", servicesController.deleteService);
 router.post("/category", servicesController.createCategory);
 router.delete("/category/:id", servicesController.deleteCategory);
 
-module.exports= router
+module.exports= router*/
